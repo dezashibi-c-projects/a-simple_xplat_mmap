@@ -142,11 +142,11 @@ This approach not only simplifies cross-platform development but also ensures th
 
 Using the memory-mapped file access library in your C projects is straightforward. The library is designed to be minimalistic and easy to integrate.
 
-1. To begin using the library, you simply need to include the `deza_mmap.h` header file in your project and define the `DEZA_MMAP_IMPL` macro in one of your source files to enable the implementation.
+1. To begin using the library, you simply need to include the `dmmap.h` header file in your project and define the `DMMAP_IMPL` macro in one of your source files to enable the implementation.
 
 ```c
-#define DEZA_MMAP_IMPL
-#include "deza_mmap.h"
+#define DMMAP_IMPL
+#include "dmmap.h"
 ```
 
 This step is essential as it compiles the implementation code into your project, linking it with the rest of your codebase.
@@ -187,28 +187,33 @@ This ensures that all resources are properly freed, preventing memory leaks or f
 
 This cross-platform memory-mapped file access library abstracts away the differences between Windows and POSIX systems, providing a unified interface for memory-mapped file operations. By using this single-header library, developers can easily integrate memory-mapped file access into their C projects without worrying about platform-specific details. The library is efficient, easy to use, and fully portable, making it a valuable tool for any C programmer dealing with file I/O operations.
 
-## License for `deza_mmap.h`
+## License for `dmmap.h`
 
-MIT License
+BSD 2-Clause License
 
-Copyright (c) 2024 Navid Dezashibi
+Copyright (c) 2024, Navid Dezashibi <navid@dezashibi.com>
+All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this
-software and associated documentation files (the "Software"), to deal in the Software
-without restriction, including without limitation the rights to use, copy, modify,
-merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to the following
-conditions:
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-The above copyright notice and this permission notice shall be included in all copies
-or substantial portions of the Software.
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## License For This Article
 

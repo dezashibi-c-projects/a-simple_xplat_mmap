@@ -13,9 +13,9 @@
 // *  Description: Refer to readme file
 // ***************************************************************************************
 
-#define DEZA_MMAP_IMPL
+#define DMMAP_IMPL
 
-#include "deza_mmap.h"
+#include "dmmap.h"
 #include <stdio.h>
 
 int main()
