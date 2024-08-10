@@ -191,7 +191,8 @@ This cross-platform memory-mapped file access library abstracts away the differe
 
 BSD 2-Clause License
 
-Copyright (c) 2024, Navid Dezashibi <navid@dezashibi.com>
+Copyright (c) 2024, Navid Dezashibi
+
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
