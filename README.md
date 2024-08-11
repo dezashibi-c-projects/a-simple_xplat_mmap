@@ -192,9 +192,3 @@ This cross-platform memory-mapped file access library abstracts away the differe
 BSD 3-Clause License
 
 Please refer to [LICENSE](/LICENSE) file.
-
-## License For This Article
-
-Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
-
-Please refer to [LICENSE](/LICENSE) file.
