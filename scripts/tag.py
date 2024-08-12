@@ -30,15 +30,28 @@ def create_and_push_tag(version, description):
         return False
     return True
 
-# Step 3: Create a GitHub release and attach files if version contains "stable"
-def create_github_release_and_attach_files(version):
-    if "stable" in version:
-        try:
-            release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', '']
+# Step 3: Create or update a GitHub release and attach files if version contains "stable"
+def create_or_update_github_release(version, description):
+    try:
+        # Check if a release with this tag already exists
+        result = subprocess.run(['gh', 'release', 'view', version], capture_output=True, text=True)
+        release_exists = result.returncode == 0
+
+        if release_exists:
+            # Update the existing release
+            subprocess.run(['gh', 'release', 'edit', version, '--title', version, '--notes', description], check=True)
+        else:
+            # Create a new release
+            release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', description]
             subprocess.run(release_command, check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"Error during GitHub release creation: {e}")
-            return False
+
+        # Update the "latest" release if the version contains "stable"
+        if "stable" in version:
+            subprocess.run(['gh', 'release', 'edit', 'latest', '--tag', version, '--latest'], check=True)
+
+    except subprocess.CalledProcessError as e:
+        print(f"Error during GitHub release creation or update: {e}")
+        return False
     return True
 
 def main():
@@ -52,10 +65,10 @@ def main():
     print(f"Tag description:\n{description}")
     
     if create_and_push_tag(version, description):
-        if create_github_release_and_attach_files(version):
-            print(f"Successfully created and pushed version {version}, with attached files for the release.")
+        if create_or_update_github_release(version, description):
+            print(f"Successfully created or updated the release for version {version}.")
         else:
-            print(f"Failed to create GitHub release or attach files for version {version}.")
+            print(f"Failed to create or update GitHub release for version {version}.")
     else:
         print(f"Failed to tag or push version {version}.")
 
