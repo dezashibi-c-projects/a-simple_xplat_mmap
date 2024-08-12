@@ -140,7 +140,21 @@ This approach not only simplifies cross-platform development but also ensures th
 
 ## Using the Cross-Platform Memory-Mapped File Access Library
 
-**👉 NOTE: You can get the the latest for the latest `rc` or `beta` and/or get the latest stable version from releases**
+**👉 NOTE: You can get the the latest for the latest `rc` or `beta` and/or get the latest stable version from releases. you can use the following commands:**
+
+- the latest release:
+
+```bash
+wget <https://github.com/dezashibi-c-projects/dmmap/releases/download/$(curl> -s <https://api.github.com/repos/dezashibi-c-projects/dmmap/releases/latest> | grep -oP '"tag_name": "\K(.*)(?=")')/dmmap.h
+```
+
+- the specific version
+
+```bash
+https://github.com/dezashibi-c-projects/dmmap/releases/download/<version>/dmmap.h
+```
+
+**the header file is suffucuent and contains usage guide**
 
 Using the memory-mapped file access library in your C projects is straightforward. The library is designed to be minimalistic and easy to integrate.
 
