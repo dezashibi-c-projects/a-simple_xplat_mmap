@@ -1,5 +1,6 @@
-## v0.9.9
+## v0.9.10
 
+- simplify script
 - update readme
 
 =======
