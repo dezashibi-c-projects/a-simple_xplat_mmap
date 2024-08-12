@@ -1,0 +1,34 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*" # Adjust this pattern according to your versioning scheme
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Extract release notes from CHANGE_LOGS.md
+        id: extract_notes
+        run: |
+          tag_name="${GITHUB_REF#refs/tags/}"
+          tag_name_escaped=$(echo "$tag_name" | sed 's/[]\/$*.^[]/\\&/g')
+          release_notes=$(sed -n "/^======= $tag_name_escaped$/,/^=======/p" CHANGE_LOGS.md | sed '$d')
+          echo "::set-output name=notes::$release_notes"
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: ${{ steps.extract_notes.outputs.notes }}
+          files: |
+            dmmap.h
+            example.c
