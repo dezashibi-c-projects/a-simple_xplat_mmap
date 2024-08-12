@@ -22,6 +22,7 @@ jobs:
           echo "::set-output name=notes::$release_notes"
 
       - name: Create GitHub Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -29,6 +30,23 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: ${{ steps.extract_notes.outputs.notes }}
-          files: |
-            dmmap.h
-            example.c
+
+      - name: Upload `dmmap.h`
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dmmap.h
+          asset_name: dmmap.h
+          asset_content_type: text/plain
+
+      - name: Upload `example.c`
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./example.c
+          asset_name: example.c
+          asset_content_type: text/plain
