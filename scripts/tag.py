@@ -30,20 +30,23 @@ def create_and_push_tag(version, description):
         return False
     return True
 
-# Step 3: Create or update a GitHub release
-def create_or_update_github_release(version, description):
+# Step 3: Create GitHub release if version contains "stable", "rc", or "beta"
+def create_github_release(version, description):
     try:
         # Determine if the release should be marked as a pre-release
-        is_prerelease = "--prerelease" if "stable" not in version else ""
+        is_prerelease = "stable" not in version
 
-        # Create or update the release
-        release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', description, '--latest']
-        if is_prerelease:
-            release_command.append(is_prerelease)
-        subprocess.run(release_command, check=True)
+        if "stable" in version or "rc" in version or "beta" in version:
+            # Create the release
+            release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', description, '--latest']
+            if is_prerelease:
+                release_command.append('--prerelease')
+            subprocess.run(release_command, check=True)
+        else:
+            print(f"Version {version} does not match criteria for release. No release will be created.")
 
     except subprocess.CalledProcessError as e:
-        print(f"Error during GitHub release creation or update: {e}")
+        print(f"Error during GitHub release creation: {e}")
         return False
     return True
 
@@ -58,10 +61,10 @@ def main():
     print(f"Tag description:\n{description}")
     
     if create_and_push_tag(version, description):
-        if create_or_update_github_release(version, description):
-            print(f"Successfully created or updated the release for version {version}.")
+        if create_github_release(version, description):
+            print(f"Successfully created release for version {version}.")
         else:
-            print(f"Failed to create or update GitHub release for version {version}.")
+            print(f"Failed to create GitHub release for version {version}.")
     else:
         print(f"Failed to tag or push version {version}.")
 
