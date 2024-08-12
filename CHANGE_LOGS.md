@@ -1,4 +1,4 @@
-======= v0.9.3-stable
+======= v0.9.4-stable
 
 **Release Date: 2024-08-12**
 

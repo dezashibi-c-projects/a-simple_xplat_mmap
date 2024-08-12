@@ -19,8 +19,15 @@ jobs:
           tag_name="${GITHUB_REF#refs/tags/}"
           tag_name_escaped=$(echo "$tag_name" | sed 's/[]\/$*.^[]/\\&/g')
           release_notes=$(sed -n "/^======= $tag_name_escaped$/,/^=======/p" CHANGE_LOGS.md | sed '$d')
-          release_notes=$(echo "$release_notes" | sed 's/%/%25/g; s/\n/%0A/g; s/\r/%0D/g') # URL encode for GitHub output
-          echo "notes=$release_notes" >> $GITHUB_OUTPUT
+          echo "$release_notes" > release_notes.txt
+        shell: bash
+
+      - name: Set release notes
+        id: set_notes
+        run: |
+          notes=$(<release_notes.txt)
+          echo "notes=$notes" >> $GITHUB_OUTPUT
+        shell: bash
 
       - name: Create GitHub Release
         id: create_release
