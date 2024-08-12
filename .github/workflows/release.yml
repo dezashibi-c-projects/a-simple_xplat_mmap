@@ -78,7 +78,7 @@ jobs:
             });
 
             // Set the tag to "latest"
-            await github.git.updateRef({
+            await github.rest.git.updateRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: "refs/tags/latest",
