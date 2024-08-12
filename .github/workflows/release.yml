@@ -59,14 +59,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            const latestRelease = await github.repos.getReleaseByTag({
+            const latestRelease = await github.rest.repos.getReleaseByTag({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag: context.ref.replace('refs/tags/', '')
             });
 
             // Update the release to mark it as the latest
-            await github.repos.updateRelease({
+            await github.rest.repos.updateRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               release_id: latestRelease.data.id,
