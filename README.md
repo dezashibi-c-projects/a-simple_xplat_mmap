@@ -145,10 +145,10 @@ This approach not only simplifies cross-platform development but also ensures th
 - the latest release:
 
 ```bash
-wget <https://github.com/dezashibi-c-projects/dmmap/releases/download/$(curl> -s <https://api.github.com/repos/dezashibi-c-projects/dmmap/releases/latest> | grep -oP '"tag_name": "\K(.*)(?=")')/dmmap.h
+ wget https://github.com/dezashibi-c-projects/dmmap/releases/download/$(curl -s https://api.github.com/repos/dezashibi-c-projects/dmmap/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')/dmmap.h
 ```
 
-- the specific version
+- the specific version (remember to change `<version>` with the version you need)
 
 ```bash
 https://github.com/dezashibi-c-projects/dmmap/releases/download/<version>/dmmap.h
