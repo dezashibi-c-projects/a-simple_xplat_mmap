@@ -1,0 +1,84 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+-stable"
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Extract release notes from CHANGE_LOGS.md
+        id: extract_notes
+        run: |
+          tag_name="${GITHUB_REF#refs/tags/}"
+          tag_name_escaped=$(echo "$tag_name" | sed 's/[]\/$*.^[]/\\&/g')
+          release_notes=$(sed -n "/^======= $tag_name_escaped$/,/^=======/p" CHANGE_LOGS.md | sed '$d')
+          echo "notes=$release_notes" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: ${{ steps.extract_notes.outputs.notes }}
+          draft: false
+          prerelease: false
+
+      - name: Upload `dmmap.h`
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dmmap.h
+          asset_name: dmmap.h
+          asset_content_type: text/plain
+
+      - name: Upload `example.c`
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./example.c
+          asset_name: example.c
+          asset_content_type: text/plain
+
+      - name: Update "Latest" Release
+        uses: actions/github-script@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          script: |
+            const latestRelease = await github.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: context.ref.replace('refs/tags/', '')
+            });
+
+            // Update the release to mark it as the latest
+            await github.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: latestRelease.data.id,
+              draft: false,
+              prerelease: false
+            });
+
+            // Set the tag to "latest"
+            await github.git.updateRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/latest",
+              sha: context.sha,
+              force: true
+            });
