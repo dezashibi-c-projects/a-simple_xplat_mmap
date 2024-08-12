@@ -30,32 +30,32 @@ def create_and_push_tag(version, description):
         return False
     return True
 
-# Step 3: Create or update a GitHub release and attach files if version contains "stable"
-def create_or_update_github_release(version, description):
+# Step 3: Create or update GitHub releases
+def create_or_update_github_releases(version, description):
     try:
-        # Check if a release with this tag already exists
-        result = subprocess.run(['gh', 'release', 'view', version], capture_output=True, text=True)
-        release_exists = result.returncode == 0
+        # Check if the version contains "stable"
+        if "stable" in version:
+            # Create a new release if it doesn't already exist
+            result = subprocess.run(['gh', 'release', 'view', version], capture_output=True, text=True)
+            release_exists = result.returncode == 0
+            
+            if release_exists:
+                print(f"A release with tag {version} already exists. Skipping creation.")
+            else:
+                # Create a new release for the "stable" tag
+                release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', description]
+                subprocess.run(release_command, check=True)
 
-        if release_exists:
-            # Update the existing release
-            subprocess.run(['gh', 'release', 'edit', version, '--title', version, '--notes', description], check=True)
-        else:
-            # Create a new release
-            release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', description]
-            subprocess.run(release_command, check=True)
-
-        # Check if the "latest" release exists
+        # Always create or update the "latest" release
         result_latest = subprocess.run(['gh', 'release', 'view', 'latest'], capture_output=True, text=True)
         latest_exists = result_latest.returncode == 0
 
-        if "stable" in version:
-            if latest_exists:
-                # Update the "latest" release to point to this tag
-                subprocess.run(['gh', 'release', 'edit', 'latest', '--tag', version, '--latest'], check=True)
-            else:
-                # Create a new "latest" release
-                subprocess.run(['gh', 'release', 'create', version, *release_files, '--title', 'Latest Release', '--notes', description, '--latest'], check=True)
+        if latest_exists:
+            # Update the "latest" release to point to this tag
+            subprocess.run(['gh', 'release', 'edit', 'latest', '--tag', version, '--latest'], check=True)
+        else:
+            # Create a new "latest" release
+            subprocess.run(['gh', 'release', 'create', version, *release_files, '--title', 'Latest Release', '--notes', description, '--latest'], check=True)
 
     except subprocess.CalledProcessError as e:
         print(f"Error during GitHub release creation or update: {e}")
@@ -73,7 +73,7 @@ def main():
     print(f"Tag description:\n{description}")
     
     if create_and_push_tag(version, description):
-        if create_or_update_github_release(version, description):
+        if create_or_update_github_releases(version, description):
             print(f"Successfully created or updated the release for version {version}.")
         else:
             print(f"Failed to create or update GitHub release for version {version}.")
