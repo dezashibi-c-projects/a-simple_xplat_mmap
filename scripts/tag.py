@@ -45,9 +45,17 @@ def create_or_update_github_release(version, description):
             release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', description]
             subprocess.run(release_command, check=True)
 
-        # Update the "latest" release if the version contains "stable"
+        # Check if the "latest" release exists
+        result_latest = subprocess.run(['gh', 'release', 'view', 'latest'], capture_output=True, text=True)
+        latest_exists = result_latest.returncode == 0
+
         if "stable" in version:
-            subprocess.run(['gh', 'release', 'edit', 'latest', '--tag', version, '--latest'], check=True)
+            if latest_exists:
+                # Update the "latest" release to point to this tag
+                subprocess.run(['gh', 'release', 'edit', 'latest', '--tag', version, '--latest'], check=True)
+            else:
+                # Create a new "latest" release
+                subprocess.run(['gh', 'release', 'create', version, *release_files, '--title', 'Latest Release', '--notes', description, '--latest'], check=True)
 
     except subprocess.CalledProcessError as e:
         print(f"Error during GitHub release creation or update: {e}")
