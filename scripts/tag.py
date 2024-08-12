@@ -18,10 +18,19 @@ def extract_version():
                     break
     return version
 
-# Step 2: Add specific files and commit
+# Step 2: Add specific files and commit (if necessary)
 def add_files_and_commit(version):
     try:
+        # Stage files
         subprocess.run(['git', 'add', *release_files], check=True)
+        
+        # Check if there are any changes to commit
+        result = subprocess.run(['git', 'status', '--porcelain'], capture_output=True, text=True)
+        if not result.stdout.strip():
+            print("No changes to commit.")
+            return True
+        
+        # Commit the changes
         subprocess.run(['git', 'commit', '-m', f'Add artifacts for version {version}'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error during git commit: {e}")
