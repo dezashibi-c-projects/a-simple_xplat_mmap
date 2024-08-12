@@ -1,3 +1,9 @@
+## v0.9.11-stable
+
+- add both header and example files to release
+
+=======
+
 ## v0.9.10
 
 - simplify script

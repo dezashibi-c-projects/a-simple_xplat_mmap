@@ -1,7 +1,7 @@
 import subprocess
 import re
 
-release_files = ['dmmap.h']
+release_files = ['dmmap.h', 'example.c']
 
 # Step 1: Extract the version and description from CHANGE_LOGS.md
 def extract_version_and_description():
