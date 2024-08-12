@@ -140,6 +140,8 @@ This approach not only simplifies cross-platform development but also ensures th
 
 ## Using the Cross-Platform Memory-Mapped File Access Library
 
+**👉 NOTE: You can get the the latest for the latest `rc` or `beta` and/or get the latest stable version from releases**
+
 Using the memory-mapped file access library in your C projects is straightforward. The library is designed to be minimalistic and easy to integrate.
 
 1. To begin using the library, you simply need to include the `dmmap.h` header file in your project and define the `DMMAP_IMPL` macro in one of your source files to enable the implementation.
