@@ -140,7 +140,7 @@ This approach not only simplifies cross-platform development but also ensures th
 
 ## Using the Cross-Platform Memory-Mapped File Access Library
 
-**👉 NOTE: You can get the the latest for the latest `rc` or `beta` and/or get the latest stable version from releases. you can use the following commands:**
+**👉 NOTE: You can get the latest `rc`, `beta`, or stable version from releases. You can use the following commands:**
 
 - the latest release:
 
