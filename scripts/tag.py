@@ -1,9 +1,22 @@
 import subprocess
-import re
+import zipfile
+import os
 
+folder_to_zip = ''
 release_files = ['dmmap.h', 'example.c']
 
-# Step 1: Extract the version and description from CHANGE_LOGS.md
+def zip_folder(folder_path, output_filename):
+    folder_name = os.path.basename(folder_path.rstrip('/\\'))
+    folder_path = os.path.abspath(folder_path)
+    
+    with zipfile.ZipFile(output_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                full_path = os.path.join(root, file)
+                arcname = os.path.join(folder_name, os.path.relpath(full_path, folder_path))
+                zipf.write(full_path, arcname)
+
+
 def extract_version_and_description():
     with open('CHANGE_LOGS.md', 'r') as file:
         description = []
@@ -12,14 +25,13 @@ def extract_version_and_description():
         for line in file:
             line = line.strip()
             if not version and line.startswith('## '):
-                version = line.split('## ')[1]  # Extract the version title
+                version = line.split('## ')[1]
             if line == "=======":
                 break
             description.append(line)
     
     return version, "\n".join(description)
 
-# Step 2: Create and push the Git tag
 def create_and_push_tag(version, description):
     try:
         subprocess.run(['git', 'tag', '-a', version, '-m', description], check=True)
@@ -29,13 +41,17 @@ def create_and_push_tag(version, description):
         print(f"Error during git tag/push: {e}")
         return False
 
-# Step 3: Create GitHub release if version contains "stable", "rc", or "beta"
 def create_github_release(version, description):
     if any(key in version for key in ["stable", "rc", "beta"]):
         try:
-            release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', description, '--latest']
+            if folder_to_zip != '':
+                zip_folder(folder_to_zip, f"{folder_to_zip}.zip")
+
+            release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', description]
             if "stable" not in version:
                 release_command.append('--prerelease')
+            else:
+                release_command.append('--latest')
             subprocess.run(release_command, check=True)
             return True
         except subprocess.CalledProcessError as e:
