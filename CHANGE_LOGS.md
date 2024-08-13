@@ -1,6 +1,7 @@
-## v0.9.11-stable
+## v0.9.12-stable
 
 - add both header and example files to release
+- update release script
 
 =======
 
