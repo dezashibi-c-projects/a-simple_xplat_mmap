@@ -145,13 +145,13 @@ This approach not only simplifies cross-platform development but also ensures th
 - the latest release:
 
 ```bash
- wget https://github.com/dezashibi-c-projects/dmmap/releases/download/$(curl -s https://api.github.com/repos/dezashibi-c-projects/dmmap/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')/dmmap.h
+ wget https://github.com/dezashibi-c/dmmap/releases/download/$(curl -s https://api.github.com/repos/dezashibi-c/dmmap/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')/dmmap.h
 ```
 
 - the specific version (remember to change `<version>` with the version you need)
 
 ```bash
-https://github.com/dezashibi-c-projects/dmmap/releases/download/<version>/dmmap.h
+https://github.com/dezashibi-c/dmmap/releases/download/<version>/dmmap.h
 ```
 
 **the header file is suffucuent and contains usage guide**
@@ -202,6 +202,10 @@ This ensures that all resources are properly freed, preventing memory leaks or f
 ## Conclusion
 
 This cross-platform memory-mapped file access library abstracts away the differences between Windows and POSIX systems, providing a unified interface for memory-mapped file operations. By using this single-header library, developers can easily integrate memory-mapped file access into their C projects without worrying about platform-specific details. The library is efficient, easy to use, and fully portable, making it a valuable tool for any C programmer dealing with file I/O operations.
+
+## Contribution
+
+Please refer to [my coding style guide](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) if you'd like to contribute.
 
 ## License for `dmmap.h`
 

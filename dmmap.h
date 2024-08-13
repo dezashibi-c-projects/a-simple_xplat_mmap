@@ -1,6 +1,6 @@
 // ***************************************************************************************
 //    Project: Easy Cross-Platform File Mapping with a Single-Header C Library
-//    Repository: https://github.com/dezashibi-c-projects/dmmap
+//    Repository: https://github.com/dezashibi-c/dmmap
 //    File: dmmap.h
 //    Date: 2024-08-09
 //    Author: Navid Dezashibi
